@@ -1,0 +1,15 @@
+{{- /* An example consul-template template                                            */ -}}
+{{- /* In this example, we iterate over _all_ services using `range services`.        */ -}}
+{{- /* In a production setting, you might want to limit to certain services or tags.  */ -}}
+{{- /*                                                                                */ -}}
+{{range services }}
+{{- /* Generate a [[Services]] entry for each service */ -}}
+[[Services]]
+  Name = "{{ .Name }}"
+  Nodes = [
+    {{- /* Add the healthy nodes for each service to Nodes */ -}}
+    {{- range service .Name }}
+    "{{ .Address }}:{{ .Port }}",{{ end }}
+  ]
+
+{{ end }}
