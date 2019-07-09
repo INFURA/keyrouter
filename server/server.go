@@ -47,8 +47,8 @@ func (s *server) PopulateService(name string, nodes consistent.Members) (added c
 	return
 }
 
-// Handler returns an http.HandlerFunc which implements the server logic
-func (s *server) Handler() http.HandlerFunc {
+// ServiceQueryHandler returns an http.HandlerFunc which can query a single service
+func (s *server) ServiceQueryHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		serviceName := r.URL.Path
 		s.mu.RLock()
@@ -116,5 +116,24 @@ func (s *server) Handler() http.HandlerFunc {
 		}
 
 		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+}
+
+// AllServicesHandler returns an http.Handler that provides information about all known services
+func (s *server) AllServicesHandler() http.HandlerFunc {
+	// For now just return the known services as a JSON array
+	return func(w http.ResponseWriter, r *http.Request) {
+		s.mu.RLock()
+		services := make([]string, 0, len(s.services))
+		for key, _ := range s.services {
+			services = append(services, key)
+		}
+		s.mu.RUnlock()
+
+		w.Header().Set("Content-Type", "application/json")
+		err := json.NewEncoder(w).Encode(services)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		}
 	}
 }
