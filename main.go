@@ -89,7 +89,8 @@ func main() {
 		}
 	}()
 
-	router.PathPrefix("/service/").Handler(http.StripPrefix("/service/", srv.Handler()))
+	router.Path("/service").Handler(srv.AllServicesHandler())
+	router.PathPrefix("/service/").Handler(http.StripPrefix("/service/", srv.ServiceQueryHandler()))
 
 	log.Printf("[INFO] Ready to serve at %v", address)
 	s := http.Server{

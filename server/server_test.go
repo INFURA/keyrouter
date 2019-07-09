@@ -15,7 +15,7 @@ import (
 	"github.com/INFURA/keyrouter/server"
 )
 
-func TestMicroservice_Handler(t *testing.T) {
+func TestServer_ServiceQueryHandler(t *testing.T) {
 
 	srv := server.New()
 	// add some entries
@@ -29,7 +29,7 @@ func TestMicroservice_Handler(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	handler := srv.Handler()
+	handler := srv.ServiceQueryHandler()
 
 	// get 3 entries for foo
 	{
@@ -148,7 +148,33 @@ func TestMicroservice_Handler(t *testing.T) {
 	}
 }
 
-func BenchmarkMicroservice_Handler(b *testing.B) {
+func TestServer_AllServicesHandler(t *testing.T) {
+	srv := server.New()
+	// add some entries
+	{
+		_, _, err := srv.PopulateService("foo", consistent.Members{"a", "b", "c"})
+		require.NoError(t, err)
+	}
+
+	{
+		_, _, err := srv.PopulateService("bar", consistent.Members{"1", "2", "3"})
+		require.NoError(t, err)
+	}
+
+	handler := srv.AllServicesHandler()
+
+	// do a GET on the handler
+	{
+		request, err := http.NewRequest("GET", "/", nil)
+		require.NoError(t, err)
+		rr := httptest.NewRecorder()
+		handler.ServeHTTP(rr, request)
+
+		require.Equal(t, http.StatusOK, rr.Code, rr.Body.String())
+	}
+}
+
+func BenchmarkServer_ServiceQueryHandler(b *testing.B) {
 	srv := server.New()
 
 	services := 10
@@ -163,7 +189,7 @@ func BenchmarkMicroservice_Handler(b *testing.B) {
 		_, _, err := srv.PopulateService(fmt.Sprintf("service-%d", service), members)
 		require.NoError(b, err)
 	}
-	handler := srv.Handler()
+	handler := srv.ServiceQueryHandler()
 	b.ResetTimer()
 
 	for n := 0; n < b.N; n++ {
