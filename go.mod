@@ -8,7 +8,7 @@ require (
 	github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf // indirect
 	github.com/buraksezer/consistent v0.0.0-20190524112033-8d954167dcc6
 	github.com/cespare/xxhash v1.1.0
-	github.com/gorilla/mux v1.7.2
+	github.com/gorilla/mux v1.7.3
 	github.com/hashicorp/logutils v1.0.0
 	github.com/pelletier/go-toml v1.4.0
 	github.com/pkg/errors v0.8.1
