@@ -10,7 +10,7 @@ require (
 	github.com/cespare/xxhash v1.1.0
 	github.com/gorilla/mux v1.7.4
 	github.com/hashicorp/logutils v1.0.0
-	github.com/pelletier/go-toml v1.7.0
+	github.com/pelletier/go-toml v1.8.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.5.1
 )
