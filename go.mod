@@ -8,9 +8,10 @@ require (
 	github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf // indirect
 	github.com/buraksezer/consistent v0.0.0-20190524112033-8d954167dcc6
 	github.com/cespare/xxhash v1.1.0
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gorilla/mux v1.7.4
 	github.com/hashicorp/logutils v1.0.0
-	github.com/pelletier/go-toml v1.8.0
+	github.com/pelletier/go-toml v1.9.4
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.6.1
 )
